@@ -2,11 +2,13 @@
 
 using namespace std;
 
-enum find_states(None, Found_Sign, Found_Type, Found_Star, Found_Checksum);
+enum find_states{None, Found_Sign, Found_Type, Found_Star, Found_Checksum};
 const string types1 = "GPGGA";
 const string types2 = "GPGSA";
 const string types3 = "GPGSV";
 const string types4 = "GPRMC";
+const char sign = '$';
+const char star = '*';
 
 class finder
 {
@@ -20,7 +22,7 @@ class finder
 		string checksum;
 		
 	public:
-		finder(char);
+		finder();
 		~finder();
-		bool find();
+		void find(char c);
 	};
