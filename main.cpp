@@ -5,15 +5,16 @@
 using namespace std;
 
 int main(int argc, char *argv[]){
+	GPSfinder GPS;
 	char byte;
 	ifstream infile;
 	infile.open(argv[1]);
-	finder fone;
-	//int checkSum('GPGSA,A,3,17,06,28,02,24,,,,,,,,3.2,1.7,2.7');
-	while(!infile.eof()){
+	while(!infile.eof())
+	{
 		infile.get(byte);
-		
-		fone.finder::find(byte);
+		GPS.FindByte(byte);
 	}
-	}
-	
+	infile.close();
+}
+///////////////////////////////////////////////////////////////////
+
