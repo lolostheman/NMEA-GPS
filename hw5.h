@@ -20,9 +20,11 @@ class finder
 		string type;
 		string data;
 		string checksum;
+		bool done;
 		
 	public:
 		finder();
 		~finder();
 		void find(char c);
+		string checkSum(const std::string& a);
 	};
