@@ -1,30 +1,25 @@
+#include <iostream>
+#include <fstream>
 #include <string>
+#include <sstream>
+#include <algorithm>
 
 using namespace std;
 
-enum find_states{None, Found_Sign, Found_Type, Found_Star, Found_Checksum};
-const string types1 = "GPGGA";
-const string types2 = "GPGSA";
-const string types3 = "GPGSV";
-const string types4 = "GPRMC";
-const char sign = '$';
-const char star = '*';
+enum states {None, found_start, found_type, found_data, found_checksum};
 
-class finder
-{
+class GPSfinder {
+
 	private:
-		enum find_states State;
-		char to_find;
-		//string type1,type2,type3,type4;
-		string result;
-		string type;
-		string data;
-		string checksum;
-		bool done;
+		enum states state;
+		string type, data,, checksum, final_type, final_data, final_checksum;
+		char check = 0;
 		
 	public:
-		finder();
-		~finder();
-		void find(char c);
-		string checkSum(const std::string& a);
-	};
+		GPSfinder();
+		~GPSfinder();
+
+		void FindByte(char byte);
+		void CheckandPrint();
+		void checksumcheck(char x);
+};
