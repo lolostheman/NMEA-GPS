@@ -12,9 +12,9 @@ class GPSfinder {
 
 	private:
 		enum states state;
-		string type, data,, checksum, final_type, final_data, final_checksum;
+		string type, data, checksum, final_type, final_data, final_checksum;
 		char check = 0;
-		
+		int num = 0;	
 	public:
 		GPSfinder();
 		~GPSfinder();

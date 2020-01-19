@@ -3,86 +3,85 @@
 #include <string>
 #include <sstream>
 #include <algorithm>
-
-using namespace std;
-
+#include <cctype>
+#include <functional>
+#include <ctype.h>
 GPSfinder::GPSfinder(){
 	//to_find = c;
-	state = None;
+	this->state = None;
 }
 
-finder::~finder(){}
+GPSfinder::~GPSfinder(){}
 
 void GPSfinder::checksumcheck(char x){
-	check = check ^ (x);
+	this->check = this->check ^ (x);
 
 }
 
 void GPSfinder::FindByte(char byte)
 {
-	if(state == None)
+	if(this->state == None)
 	{
 		if(byte == '$')
 		{
-			state =  found_start;
+			this->state = found_start;
 		}
 	}
-	else if (state == found_start)
+	else if (this->state == found_start)
 	{
 		GPSfinder::checksumcheck(byte);
-		type += byte;
+		this->type += byte;
 
-		if(type == "GPGGA" || type == "GPGSA" || type == "GPGSV" || type == "GPRMC")
+		if(this->type == "GPGGA" || this->type == "GPGSA" || this->type == "GPGSV" || this->type == "GPRMC")
 		{
-			final_type = type;
-			type.clear();
-			state = found_type;
+			this->final_type = this->type;
+			this->type.clear();
+			this->state = found_type;
 		}
 		else if(byte == ',')
 		{
-			state = None;
-			type.clear();
-			check = 0;
-			final_type.clear();
+			this->state = None;
+			this->type.clear();
+			this->check = 0;
+			this->final_type.clear();
 		}
 	}
-	else if(state == found_type)
+	else if(this->state == found_type)
 	{
 		if(byte == '*')
 		{
-			final_data = data;
-			data.clear();
-			state = found_data;
+			this->final_data = this->data;
+			this->data.clear();
+			this->state = found_data;
 		}
 		else if(byte == '$')
 		{
-			data.clear();
-			type.clear();
-			check = 0;
-	char byte
-			state = found_start;
+			this->data.clear();
+			this->type.clear();
+			this->check = 0;
+			this->state = found_start;
 		}
 		else
 		{
-			data += byte;
+			this->data += byte;
 			GPSfinder::checksumcheck(byte);
 		}
 	}
-	else if(state == found_data)
+	else if(this->state == found_data)
 	{
-		if(num == 1)
+		if(this->num == 1)
 		{
-			checksum += byte;
-			final_checksum = checksum;
-			checksum.clear();
-			state = None;
-			num = 0;
-			CheckandPrint();
+			this->checksum += byte;
+			this->final_checksum = this->checksum;
+			this->checksum.clear();
+			this->state = None;
+			this->num = 0;
+			GPSfinder::CheckandPrint();
 		}
 		else 
 		{
-			checksum += byte;
-			num++;
+			this->checksum += byte;
+			this->num++;
 		}
 	}
 }
@@ -91,32 +90,32 @@ void GPSfinder::FindByte(char byte)
 void GPSfinder::CheckandPrint()
 {
 	stringstream ss;
-	ss << hex << int(check);
+	ss << hex << int(this->check);
 	string output = ss.str();
-	transform(output.begin(), output.end(), output.begin(), toupper);
+	transform(output.begin(), output.end(), output.begin(), ::toupper);
 
-	if(final_checksum == output)
+	if(this->final_checksum == output)
 	{
-		cout << "Message type: " << final_type << endl;
-		cout << "Message data: " << final_type << final_data << endl;
-		cout << "Message checksum: " << final_checksum << endl << endl;
-		final_checksum.clear();
-		final_type.clear();
-		final_data.clear();
-		check = 0;
-		state = None;
+		cout << "Message type: " << this->final_type << endl;
+		cout << "Message data: " << this->final_type << this->final_data << endl;
+		cout << "Message checksum: " << this->final_checksum << endl << endl;
+		this->final_checksum.clear();
+		this->final_type.clear();
+		this->final_data.clear();
+		this->check = 0;
+		this->state = None;
 	}
 	else
 	{
-		final_checksum.clear();
-		final_type.clear();
-		final_data.clear();
-		check = 0;
-		checksum.clear();
-		type.clear();
-		data.clear();
-		state = None;
+		this->final_checksum.clear();
+		this->final_type.clear();
+		this->final_data.clear();
+		this->check = 0;
+		this->checksum.clear();
+		this->type.clear();
+		this->data.clear();
+		this->state = None;
 	}
 }
 	
-			
+		
